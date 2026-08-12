@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Dashboard | Shantanu Jadhav</title>
+
+    <!-- ================= BOOTSTRAP 5 ================= -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- ================= FONT AWESOME ================= -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+        body {
+            background: #f5f6f8;
+            min-height: 100vh;
+        }
+
+        .navbar-brand {
+            letter-spacing: 0.3px;
+        }
+
+        .dashboard-title {
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           STAT CARDS
+        ===================================================== */
+
+        .stat-card {
+            border: none;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 20px;
+        }
+
+
+        /* =====================================================
+           MESSAGE CARD
+        ===================================================== */
+
+        .message-card {
+            border: none;
+            border-radius: 16px;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .message-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.08) !important;
+        }
+
+
+        /* =====================================================
+           USER ICON
+        ===================================================== */
+
+        .message-icon {
+            width: 45px;
+            height: 45px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #212529;
+            color: white;
+
+            flex-shrink: 0;
+        }
+
+
+        /* =====================================================
+           MESSAGE
+        ===================================================== */
+
+        .message-text {
+            white-space: pre-wrap;
+            word-break: break-word;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           EMAIL
+        ===================================================== */
+
+        .email-link {
+            word-break: break-word;
+        }
+
+
+        /* =====================================================
+           DATE
+        ===================================================== */
+
+        .date-text {
+            white-space: nowrap;
+        }
+
+
+        /* =====================================================
+           EMPTY STATE
+        ===================================================== */
+
+        .empty-state {
+            border-radius: 16px;
+        }
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status-badge {
+            font-size: 12px;
+            padding: 7px 10px;
+        }
+
+
+        /* =====================================================
+           SEARCH / FILTER
+        ===================================================== */
+
+        .filter-card {
+            border: none;
+            border-radius: 16px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            z-index: 2;
+        }
+
+        .search-box input {
+            padding-left: 42px;
+            border-radius: 10px;
+        }
+
+        .filter-select {
+            border-radius: 10px;
+        }
+
+
+        /* =====================================================
+           COPY EMAIL BUTTON
+        ===================================================== */
+
+        .copy-email-btn {
+            border: none;
+            background: transparent;
+            color: #6c757d;
+            padding: 0 4px;
+        }
+
+        .copy-email-btn:hover {
+            color: #212529;
+        }
+
+
+        /* =====================================================
+           REPLY MODAL
+        ===================================================== */
+
+        .reply-modal-icon {
+            width: 45px;
+            height: 45px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #212529;
+            color: white;
+        }
+
+        .original-message {
+            white-space: pre-wrap;
+            word-break: break-word;
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           NO SEARCH RESULTS
+        ===================================================== */
+
+        #noSearchResults {
+            display: none;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+            margin-top: auto;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 576px) {
+
+            .dashboard-title {
+                font-size: 24px;
+            }
+
+            .message-card .card-body {
+                padding: 20px !important;
+            }
+
+            .date-text {
+                font-size: 11px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-buttons form,
+            .action-buttons button {
+                width: 100%;
+            }
+
+            .action-buttons .btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar navbar-dark bg-dark shadow-sm">
+
+    <div class="container">
+
+        <!-- BRAND -->
+
+        <a
+            href="/admin"
+            class="navbar-brand fw-bold"
+        >
+
+            <i class="fa-solid fa-user-shield me-2"></i>
+
+            Shantanu Admin
+
+        </a>
+
+
+        <!-- NAVBAR ACTIONS -->
+
+        <div class="d-flex align-items-center gap-2">
+
+            <!-- Refresh -->
+
+            <a
+                href="/admin"
+                class="btn btn-outline-light btn-sm"
+                title="Refresh Dashboard"
+            >
+
+                <i class="fa-solid fa-rotate"></i>
+
+            </a>
+
+
+            <!-- Logout -->
+
+            <a
+                href="/admin/logout"
+                class="btn btn-outline-light btn-sm"
+            >
+
+                <i class="fa-solid fa-right-from-bracket me-1"></i>
+
+                Logout
+
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     MAIN CONTAINER
+===================================================== -->
+
+<div class="container py-5">
+
+
+    <!-- =================================================
+         HEADER
+    ================================================= -->
+
+    <div class="row align-items-center mb-4">
+
+        <div class="col-md-8">
+
+            <h2 class="dashboard-title mb-1">
+
+                Admin Dashboard
+
+            </h2>
+
+            <p class="text-muted mb-0">
+
+                Manage contact messages received from your portfolio.
+
+            </p>
+
+        </div>
+
+
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+
+            <a
+                href="/"
+                target="_blank"
+                class="btn btn-outline-dark btn-sm"
+            >
+
+                <i class="fa-solid fa-globe me-1"></i>
+
+                View Portfolio
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         STATISTICS
+    ================================================= -->
+
+    <div class="row g-4 mb-5">
+
+
+        <!-- TOTAL -->
+
+        <div class="col-6 col-lg-3">
+
+            <div class="card stat-card shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center">
+
+                        <div
+                            class="stat-icon bg-dark text-white me-3"
+                        >
+
+                            <i class="fa-solid fa-envelope"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Total Messages
+                            </p>
+
+                            <h3 class="fw-bold mb-0">
+
+                                <%= typeof totalMessages !== "undefined"
+                                    ? totalMessages
+                                    : contacts.length %>
+
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- UNREAD -->
+
+        <div class="col-6 col-lg-3">
+
+            <div class="card stat-card shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center">
+
+                        <div
+                            class="stat-icon bg-primary text-white me-3"
+                        >
+
+                            <i class="fa-solid fa-envelope"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Unread
+                            </p>
+
+                            <h3 class="fw-bold mb-0">
+
+                                <%= typeof unreadCount !== "undefined"
+                                    ? unreadCount
+                                    : contacts.filter(c => !c.isRead).length %>
+
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- REPLIED -->
+
+        <div class="col-6 col-lg-3">
+
+            <div class="card stat-card shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center">
+
+                        <div
+                            class="stat-icon bg-success text-white me-3"
+                        >
+
+                            <i class="fa-solid fa-reply"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Replied
+                            </p>
+
+                            <h3 class="fw-bold mb-0">
+
+                                <%= contacts.filter(c => c.isReplied).length %>
+
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PENDING -->
+
+        <div class="col-6 col-lg-3">
+
+            <div class="card stat-card shadow-sm h-100">
+
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-center">
+
+                        <div
+                            class="stat-icon bg-warning text-dark me-3"
+                        >
+
+                            <i class="fa-solid fa-clock"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Pending Reply
+                            </p>
+
+                            <h3 class="fw-bold mb-0">
+
+                                <%= contacts.filter(c => !c.isReplied).length %>
+
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         SEARCH & FILTER
+    ================================================= -->
+
+    <div class="card filter-card shadow-sm mb-5">
+
+        <div class="card-body p-4">
+
+            <div class="row g-3 align-items-center">
+
+
+                <!-- SEARCH -->
+
+                <div class="col-lg-7">
+
+                    <label class="form-label fw-semibold">
+
+                        <i class="fa-solid fa-magnifying-glass me-1"></i>
+
+                        Search Messages
+
+                    </label>
+
+                    <div class="search-box">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input
+                            type="text"
+                            id="messageSearch"
+                            class="form-control"
+                            placeholder="Search by name, email, subject or message..."
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- FILTER -->
+
+                <div class="col-lg-3">
+
+                    <label class="form-label fw-semibold">
+
+                        <i class="fa-solid fa-filter me-1"></i>
+
+                        Filter
+
+                    </label>
+
+                    <select
+                        id="statusFilter"
+                        class="form-select filter-select"
+                    >
+
+                        <option value="all">
+                            All Messages
+                        </option>
+
+                        <option value="unread">
+                            Unread
+                        </option>
+
+                        <option value="read">
+                            Read
+                        </option>
+
+                        <option value="replied">
+                            Replied
+                        </option>
+
+                        <option value="pending">
+                            Not Replied
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- CLEAR -->
+
+                <div class="col-lg-2">
+
+                    <label class="form-label fw-semibold d-none d-lg-block">
+                        &nbsp;
+                    </label>
+
+                    <button
+                        type="button"
+                        id="clearFilters"
+                        class="btn btn-outline-secondary w-100"
+                    >
+
+                        <i class="fa-solid fa-xmark me-1"></i>
+
+                        Clear
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         CONTACT MESSAGE HEADER
+    ================================================= -->
+
+    <div
+        class="d-flex flex-wrap justify-content-between align-items-center mb-4"
+    >
+
+        <div>
+
+            <h3 class="fw-bold mb-1">
+
+                Contact Messages
+
+            </h3>
+
+            <p class="text-muted mb-0">
+
+                Latest messages are shown first.
+
+            </p>
+
+        </div>
+
+
+        <div class="mt-3 mt-md-0">
+
+            <span class="badge text-bg-dark status-badge">
+
+                <i class="fa-solid fa-inbox me-1"></i>
+
+                <span id="visibleCount">
+                    <%= contacts.length %>
+                </span>
+
+                <span id="visibleCountText">
+                    <%= contacts.length === 1
+                        ? "Message"
+                        : "Messages" %>
+                </span>
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         SUCCESS MESSAGE
+    ================================================= -->
+
+    <% if (typeof success !== "undefined" && success) { %>
+
+        <div
+            class="alert alert-success alert-dismissible fade show"
+            role="alert"
+        >
+
+            <i class="fa-solid fa-circle-check me-2"></i>
+
+            <%= success %>
+
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+            ></button>
+
+        </div>
+
+    <% } %>
+
+
+
+    <!-- =================================================
+         ERROR MESSAGE
+    ================================================= -->
+
+    <% if (typeof error !== "undefined" && error) { %>
+
+        <div
+            class="alert alert-danger alert-dismissible fade show"
+            role="alert"
+        >
+
+            <i class="fa-solid fa-circle-exclamation me-2"></i>
+
+            <%= error %>
+
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+            ></button>
+
+        </div>
+
+    <% } %>
+
+
+
+    <!-- =================================================
+         NO SEARCH RESULTS
+    ================================================= -->
+
+    <div
+        id="noSearchResults"
+        class="card border-0 shadow-sm empty-state mb-4"
+    >
+
+        <div class="card-body text-center py-5">
+
+            <i
+                class="fa-solid fa-magnifying-glass fs-1 text-muted mb-4"
+            ></i>
+
+            <h4 class="fw-bold">
+                No Matching Messages
+            </h4>
+
+            <p class="text-muted mb-0">
+                Try changing your search or filter.
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         NO MESSAGES
+    ================================================= -->
+
+    <% if (contacts.length === 0) { %>
+
+        <div class="card border-0 shadow-sm empty-state">
+
+            <div class="card-body text-center py-5">
+
+                <div class="mb-4">
+
+                    <i
+                        class="fa-regular fa-envelope-open fs-1 text-muted"
+                    ></i>
+
+                </div>
+
+                <h4 class="fw-bold">
+                    No Messages Yet
+                </h4>
+
+                <p class="text-muted mb-0">
+
+                    Contact messages submitted through your
+                    portfolio will appear here.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    <% } else { %>
+
+
+        <!-- =================================================
+             MESSAGE CARDS
+        ================================================= -->
+
+        <div
+            class="row g-4"
+            id="messagesContainer"
+        >
+
+
+            <% contacts.forEach(contact => { %>
+
+
+                <div
+                    class="col-lg-6 message-item"
+                    data-name="<%= contact.name || '' %>"
+                    data-email="<%= contact.email || '' %>"
+                    data-subject="<%= contact.subject || '' %>"
+                    data-message="<%= contact.message || '' %>"
+                    data-read="<%= contact.isRead ? 'read' : 'unread' %>"
+                    data-replied="<%= contact.isReplied ? 'replied' : 'pending' %>"
+                >
+
+
+                    <div class="card message-card shadow-sm h-100">
+
+                        <div class="card-body p-4">
+
+
+                            <!-- =================================
+                                 MESSAGE HEADER
+                            ================================= -->
+
+                            <div
+                                class="d-flex justify-content-between align-items-start gap-3"
+                            >
+
+                                <div
+                                    class="d-flex align-items-center gap-3"
+                                >
+
+                                    <!-- USER ICON -->
+
+                                    <div class="message-icon">
+
+                                        <i class="fa-solid fa-user"></i>
+
+                                    </div>
+
+
+                                    <!-- USER DETAILS -->
+
+                                    <div>
+
+                                        <h5 class="fw-bold mb-1">
+
+                                            <%= contact.name %>
+
+                                        </h5>
+
+
+                                        <div class="d-flex align-items-center gap-1">
+
+                                            <a
+                                                href="mailto:<%= contact.email %>"
+                                                class="text-decoration-none text-muted email-link"
+                                            >
+
+                                                <i
+                                                    class="fa-solid fa-envelope me-1"
+                                                ></i>
+
+                                                <%= contact.email %>
+
+                                            </a>
+
+
+                                            <button
+                                                type="button"
+                                                class="copy-email-btn"
+                                                title="Copy email"
+                                                data-email="<%= contact.email %>"
+                                            >
+
+                                                <i class="fa-regular fa-copy"></i>
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- DATE -->
+
+                                <small class="text-muted date-text">
+
+                                    <%= new Date(
+                                        contact.createdAt
+                                    ).toLocaleDateString("en-IN") %>
+
+                                </small>
+
+                            </div>
+
+
+
+                            <hr class="my-4">
+
+
+
+                            <!-- =================================
+                                 READ / UNREAD STATUS
+                            ================================= -->
+
+                            <div class="mb-3">
+
+                                <% if (contact.isRead) { %>
+
+                                    <span
+                                        class="badge text-bg-success status-badge"
+                                    >
+
+                                        <i
+                                            class="fa-solid fa-check me-1"
+                                        ></i>
+
+                                        Read
+
+                                    </span>
+
+                                <% } else { %>
+
+                                    <span
+                                        class="badge text-bg-primary status-badge"
+                                    >
+
+                                        <i
+                                            class="fa-solid fa-circle me-1"
+                                        ></i>
+
+                                        New
+
+                                    </span>
+
+                                <% } %>
+
+                            </div>
+
+
+
+                            <!-- =================================
+                                 REPLY STATUS
+                            ================================= -->
+
+                            <div class="mb-4">
+
+                                <small
+                                    class="text-uppercase text-muted fw-bold"
+                                >
+
+                                    <i
+                                        class="fa-solid fa-paper-plane me-1"
+                                    ></i>
+
+                                    Reply Status
+
+                                </small>
+
+
+                                <div class="mt-2">
+
+                                    <% if (contact.isReplied) { %>
+
+                                        <span
+                                            class="badge text-bg-success status-badge"
+                                        >
+
+                                            <i
+                                                class="fa-solid fa-circle-check me-1"
+                                            ></i>
+
+                                            Replied
+
+                                        </span>
+
+
+                                        <% if (contact.repliedAt) { %>
+
+                                            <div class="mt-2">
+
+                                                <small class="text-muted">
+
+                                                    <i
+                                                        class="fa-regular fa-clock me-1"
+                                                    ></i>
+
+                                                    Replied on
+
+                                                    <%= new Date(
+                                                        contact.repliedAt
+                                                    ).toLocaleString("en-IN") %>
+
+                                                </small>
+
+                                            </div>
+
+                                        <% } %>
+
+
+                                    <% } else { %>
+
+                                        <span
+                                            class="badge text-bg-warning status-badge"
+                                        >
+
+                                            <i
+                                                class="fa-solid fa-clock me-1"
+                                            ></i>
+
+                                            Not Replied
+
+                                        </span>
+
+                                    <% } %>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- =================================
+                                 SUBJECT
+                            ================================= -->
+
+                            <div class="mb-4">
+
+                                <small
+                                    class="text-uppercase text-muted fw-bold"
+                                >
+
+                                    <i
+                                        class="fa-solid fa-tag me-1"
+                                    ></i>
+
+                                    Subject
+
+                                </small>
+
+
+                                <p class="mb-0 mt-2 fw-semibold">
+
+                                    <%= contact.subject || "No subject" %>
+
+                                </p>
+
+                            </div>
+
+
+
+                            <!-- =================================
+                                 MESSAGE
+                            ================================= -->
+
+                            <div>
+
+                                <small
+                                    class="text-uppercase text-muted fw-bold"
+                                >
+
+                                    <i
+                                        class="fa-solid fa-message me-1"
+                                    ></i>
+
+                                    Message
+
+                                </small>
+
+
+                                <p
+                                    class="mb-0 mt-2 text-secondary message-text"
+                                >
+
+                                    <%= contact.message %>
+
+                                </p>
+
+                            </div>
+
+
+
+                            <!-- =================================
+                                 DATE & TIME
+                            ================================= -->
+
+                            <div class="mt-4">
+
+                                <small class="text-muted">
+
+                                    <i
+                                        class="fa-regular fa-clock me-1"
+                                    ></i>
+
+                                    <%= new Date(
+                                        contact.createdAt
+                                    ).toLocaleString("en-IN") %>
+
+                                </small>
+
+                            </div>
+
+
+
+                            <!-- =================================
+                                 ACTION BUTTONS
+                            ================================= -->
+
+                            <div class="mt-4 pt-3 border-top">
+
+                                <div
+                                    class="d-flex flex-wrap gap-2 action-buttons"
+                                >
+
+
+                                    <!-- MARK READ / UNREAD -->
+
+                                    <% if (!contact.isRead) { %>
+
+                                        <form
+                                            action="/admin/read/<%= contact._id %>"
+                                            method="POST"
+                                        >
+
+                                            <button
+                                                type="submit"
+                                                class="btn btn-outline-success btn-sm"
+                                            >
+
+                                                <i
+                                                    class="fa-solid fa-check me-1"
+                                                ></i>
+
+                                                Mark as Read
+
+                                            </button>
+
+                                        </form>
+
+                                    <% } else { %>
+
+                                        <form
+                                            action="/admin/unread/<%= contact._id %>"
+                                            method="POST"
+                                        >
+
+                                            <button
+                                                type="submit"
+                                                class="btn btn-outline-secondary btn-sm"
+                                            >
+
+                                                <i
+                                                    class="fa-solid fa-envelope me-1"
+                                                ></i>
+
+                                                Mark as Unread
+
+                                            </button>
+
+                                        </form>
+
+                                    <% } %>
+
+
+
+                                    <!-- DELETE -->
+
+                                    <form
+                                        action="/admin/delete/<%= contact._id %>"
+                                        method="POST"
+                                        onsubmit="return confirm('Are you sure you want to delete this message?');"
+                                    >
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-outline-danger btn-sm"
+                                        >
+
+                                            <i
+                                                class="fa-solid fa-trash me-1"
+                                            ></i>
+
+                                            Delete
+
+                                        </button>
+
+                                    </form>
+
+
+
+                                    <!-- REPLY -->
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-dark btn-sm"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#replyModal<%= contact._id %>"
+                                    >
+
+                                        <i
+                                            class="fa-solid fa-reply me-1"
+                                        ></i>
+
+                                        <%= contact.isReplied
+                                            ? "Reply Again"
+                                            : "Reply" %>
+
+                                    </button>
+
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     REPLY MODAL
+                ================================================= -->
+
+                <div
+                    class="modal fade"
+                    id="replyModal<%= contact._id %>"
+                    tabindex="-1"
+                    aria-labelledby="replyModalLabel<%= contact._id %>"
+                    aria-hidden="true"
+                >
+
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+
+                        <div class="modal-content border-0 shadow-lg">
+
+
+                            <!-- MODAL HEADER -->
+
+                            <div class="modal-header bg-dark text-white">
+
+                                <div
+                                    class="d-flex align-items-center gap-3"
+                                >
+
+                                    <div class="reply-modal-icon">
+
+                                        <i
+                                            class="fa-solid fa-reply"
+                                        ></i>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <h5
+                                            class="modal-title mb-0"
+                                            id="replyModalLabel<%= contact._id %>"
+                                        >
+
+                                            Reply to <%= contact.name %>
+
+                                        </h5>
+
+                                        <small class="text-white-50">
+
+                                            <%= contact.email %>
+
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+
+                                <button
+                                    type="button"
+                                    class="btn-close btn-close-white"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                ></button>
+
+                            </div>
+
+
+
+                            <!-- REPLY FORM -->
+
+                            <form
+                                action="/admin/reply/<%= contact._id %>"
+                                method="POST"
+                            >
+
+                                <div class="modal-body p-4">
+
+
+                                    <!-- TO -->
+
+                                    <div class="mb-3">
+
+                                        <label
+                                            class="form-label fw-semibold"
+                                        >
+
+                                            <i
+                                                class="fa-solid fa-user me-1"
+                                            ></i>
+
+                                            To
+
+                                        </label>
+
+
+                                        <div class="input-group">
+
+                                            <input
+                                                type="email"
+                                                class="form-control"
+                                                value="<%= contact.email %>"
+                                                readonly
+                                            >
+
+                                            <a
+                                                href="mailto:<%= contact.email %>"
+                                                class="btn btn-outline-secondary"
+                                            >
+
+                                                <i
+                                                    class="fa-solid fa-envelope"
+                                                ></i>
+
+                                            </a>
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <!-- SUBJECT -->
+
+                                    <div class="mb-3">
+
+                                        <label
+                                            for="subject<%= contact._id %>"
+                                            class="form-label fw-semibold"
+                                        >
+
+                                            <i
+                                                class="fa-solid fa-tag me-1"
+                                            ></i>
+
+                                            Subject
+
+                                        </label>
+
+
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="subject<%= contact._id %>"
+                                            name="subject"
+                                            value="Re: <%= contact.subject || 'Your message' %>"
+                                            required
+                                        >
+
+                                    </div>
+
+
+
+                                    <!-- MESSAGE -->
+
+                                    <div class="mb-3">
+
+                                        <label
+                                            for="message<%= contact._id %>"
+                                            class="form-label fw-semibold"
+                                        >
+
+                                            <i
+                                                class="fa-solid fa-message me-1"
+                                            ></i>
+
+                                            Message
+
+                                        </label>
+
+
+                                        <textarea
+                                            class="form-control"
+                                            id="message<%= contact._id %>"
+                                            name="message"
+                                            rows="8"
+                                            placeholder="Write your reply here..."
+                                            required
+                                        ></textarea>
+
+                                    </div>
+
+
+
+                                    <!-- ORIGINAL MESSAGE -->
+
+                                    <div class="card bg-light border-0">
+
+                                        <div class="card-body">
+
+                                            <div
+                                                class="d-flex align-items-center mb-2"
+                                            >
+
+                                                <i
+                                                    class="fa-solid fa-clock-rotate-left text-muted me-2"
+                                                ></i>
+
+                                                <small
+                                                    class="text-uppercase fw-bold text-muted"
+                                                >
+
+                                                    Original Message
+
+                                                </small>
+
+                                            </div>
+
+
+                                            <p
+                                                class="mb-0 small text-secondary original-message"
+                                            >
+
+                                                <%= contact.message %>
+
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+
+
+
+                                <!-- MODAL FOOTER -->
+
+                                <div class="modal-footer bg-light">
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-outline-secondary"
+                                        data-bs-dismiss="modal"
+                                    >
+
+                                        <i
+                                            class="fa-solid fa-xmark me-1"
+                                        ></i>
+
+                                        Cancel
+
+                                    </button>
+
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-dark"
+                                    >
+
+                                        <i
+                                            class="fa-solid fa-paper-plane me-1"
+                                        ></i>
+
+                                        Send Reply
+
+                                    </button>
+
+                                </div>
+
+
+                            </form>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            <% }) %>
+
+
+        </div>
+
+
+    <% } %>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="bg-dark text-white py-4 mt-5">
+
+    <div class="container text-center">
+
+        <p class="mb-1">
+
+            © <%= new Date().getFullYear() %>
+            Shantanu Jadhav
+
+        </p>
+
+        <small class="text-secondary">
+
+            Portfolio Admin Panel
+
+        </small>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     BOOTSTRAP JS
+===================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+></script>
+
+
+
+<!-- =====================================================
+     ADMIN DASHBOARD JS
+===================================================== -->
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+
+        /* =================================================
+           ELEMENTS
+        ================================================= */
+
+        const searchInput =
+            document.getElementById("messageSearch");
+
+        const statusFilter =
+            document.getElementById("statusFilter");
+
+        const clearFilters =
+            document.getElementById("clearFilters");
+
+        const messageItems =
+            document.querySelectorAll(".message-item");
+
+        const noSearchResults =
+            document.getElementById("noSearchResults");
+
+        const visibleCount =
+            document.getElementById("visibleCount");
+
+        const visibleCountText =
+            document.getElementById("visibleCountText");
+
+
+        /* =================================================
+           FILTER FUNCTION
+        ================================================= */
+
+        function filterMessages() {
+
+            const searchValue =
+                searchInput.value
+                    .trim()
+                    .toLowerCase();
+
+            const selectedFilter =
+                statusFilter.value;
+
+            let visible = 0;
+
+
+            messageItems.forEach(function (item) {
+
+                const name =
+                    (item.dataset.name || "").toLowerCase();
+
+                const email =
+                    (item.dataset.email || "").toLowerCase();
+
+                const subject =
+                    (item.dataset.subject || "").toLowerCase();
+
+                const message =
+                    (item.dataset.message || "").toLowerCase();
+
+
+                const searchMatch =
+                    !searchValue ||
+                    name.includes(searchValue) ||
+                    email.includes(searchValue) ||
+                    subject.includes(searchValue) ||
+                    message.includes(searchValue);
+
+
+                let statusMatch = true;
+
+
+                if (selectedFilter === "unread") {
+
+                    statusMatch =
+                        item.dataset.read === "unread";
+
+                }
+
+
+                if (selectedFilter === "read") {
+
+                    statusMatch =
+                        item.dataset.read === "read";
+
+                }
+
+
+                if (selectedFilter === "replied") {
+
+                    statusMatch =
+                        item.dataset.replied === "replied";
+
+                }
+
+
+                if (selectedFilter === "pending") {
+
+                    statusMatch =
+                        item.dataset.replied === "pending";
+
+                }
+
+
+                if (searchMatch && statusMatch) {
+
+                    item.style.display = "";
+
+                    visible++;
+
+                } else {
+
+                    item.style.display = "none";
+
+                }
+
+            });
+
+
+            /* =============================================
+               UPDATE COUNT
+            ============================================= */
+
+            visibleCount.textContent = visible;
+
+            visibleCountText.textContent =
+                visible === 1
+                    ? "Message"
+                    : "Messages";
+
+
+            /* =============================================
+               NO RESULTS
+            ============================================= */
+
+            if (visible === 0 && messageItems.length > 0) {
+
+                noSearchResults.style.display = "block";
+
+            } else {
+
+                noSearchResults.style.display = "none";
+
+            }
+
+        }
+
+
+        /* =================================================
+           SEARCH EVENT
+        ================================================= */
+
+        searchInput.addEventListener(
+            "input",
+            filterMessages
+        );
+
+
+        /* =================================================
+           FILTER EVENT
+        ================================================= */
+
+        statusFilter.addEventListener(
+            "change",
+            filterMessages
+        );
+
+
+        /* =================================================
+           CLEAR FILTERS
+        ================================================= */
+
+        clearFilters.addEventListener(
+            "click",
+            function () {
+
+                searchInput.value = "";
+
+                statusFilter.value = "all";
+
+                filterMessages();
+
+            }
+        );
+
+
+        /* =================================================
+           COPY EMAIL
+        ================================================= */
+
+        document
+            .querySelectorAll(".copy-email-btn")
+            .forEach(function (button) {
+
+                button.addEventListener(
+                    "click",
+                    async function () {
+
+                        const email =
+                            this.dataset.email;
+
+                        try {
+
+                            await navigator.clipboard.writeText(email);
+
+                            const originalHTML =
+                                this.innerHTML;
+
+                            this.innerHTML =
+                                '<i class="fa-solid fa-check text-success"></i>';
+
+                            setTimeout(() => {
+
+                                this.innerHTML =
+                                    originalHTML;
+
+                            }, 1500);
+
+                        } catch (error) {
+
+                            console.error(
+                                "Unable to copy email:",
+                                error
+                            );
+
+                        }
+
+                    }
+                );
+
+            });
+
+
+    });
+
+</script>
+
+
+</body>
+
+</html>
